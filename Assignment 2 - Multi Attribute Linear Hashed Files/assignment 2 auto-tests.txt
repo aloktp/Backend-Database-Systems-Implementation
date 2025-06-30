@@ -1,0 +1,744 @@
+Session: 24T1
+Assignment: ass2  Submission ID: 5464669
+
+
+Your submission has been marked. + /usr/bin/less -m /import/reed/7/z5464669/cs9315.ass2.mrk
+
+!!section banner
+####### #        #####  #        #####   #####   #####
+#       #    #  #     # #    #  #     # #     # #     #
+#       #    #  #       #    #  #       #       #     #
+ #####  ####### ######  ####### ######  ######   ######
+      #      #  #     #      #  #     # #     #       #
+#     #      #  #     #      #  #     # #     # #     #
+ #####       #   #####       #   #####   #####   #####
+
+5464669	Thottakathu Prasannakumar, Alok        	8543   COMPAS COMPSS
+
+Submissions:-
+
+S 0	Sun Apr 14 14:09:02 2024	5464669 all ass2 -1:-9
+
+Tue May 07 13:39:13 2024		## vx12.orchestra.cse.unsw.EDU.AU ##
+!!section listing
+
+
+===== COMP9315 24T1 Assignment 2 Testing =====
+
+Your submission files
+Archive:  ass2.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+     1129  2019-07-25 06:58   Makefile
+     1265  2019-07-23 15:38   bits.c
+     1916  2019-07-23 22:30   chvec.c
+     2146  2019-07-23 15:43   create.c
+     1330  2019-07-23 22:00   dump.c
+     4218  2019-07-25 07:00   gendata.c
+     2744  2019-07-23 15:39   hash.c
+     1443  2019-07-23 21:59   insert.c
+     2763  2019-07-23 15:40   page.c
+     4821  2019-07-23 15:28   pages.c
+     6392  2024-04-14 13:59   query.c
+    10647  2024-04-14 14:01   reln.c
+     1556  2019-07-23 21:55   select.c
+      624  2019-07-23 22:00   stats.c
+     3372  2024-04-14 13:58   tuple.c
+      461  2019-07-25 06:51   util.c
+      385  2019-07-23 15:38   bits.h
+      549  2019-07-23 15:38   chvec.h
+      715  2019-07-23 15:38   defs.h
+      264  2019-07-23 15:39   hash.h
+      580  2019-07-23 15:40   page.h
+      394  2019-07-23 15:40   query.h
+      755  2019-07-23 15:40   reln.h
+      627  2019-07-23 15:40   tuple.h
+      322  2019-07-25 06:51   util.h
+---------                     -------
+    51418                     25 files
+Setting up "testing" directory in current directory
+Your code compiled successfully.
+
+===== Build first data file (3 attributes, 2 initial pages
+===== Tuples are added in stages 10, 30, 260, 700
+
+
+Test 0: Create an MALH file 3 attrs, 2 pages
+
+
+Check stats
+TEST PASSED
+Check data file size
+TEST PASSED
+
+
+Test 1: Insert 10 tuples (no splits)
+
+Check stats
+TEST PASSED
+Check data file size
+TEST PASSED
+
+
+Test 2: Insert 30 more tuples
+
+Check stats
+TEST PASSED
+Check data file size
+TEST PASSED
+
+
+Test 3: Insert 260 more tuples
+
+Check stats
+TEST PASSED
+Check data file size
+TEST PASSED
+
+
+Test 4: Insert 700 more tuples
+
+Check stats
+TEST PASSED
+Check data file size
+TEST PASSED
+
+
+Test 5: Query: 1500,?,?
+
+TEST PASSED
+
+
+Test 6: Query: ?,software,?
+
+TEST PASSED
+
+
+Test 7: Query: ?,?,bed
+
+TEST PASSED
+
+
+Test 8: Query: ?,chair,bed
+
+TEST PASSED
+
+
+Test 9: Query: 1400,bed,drill
+
+TEST PASSED
+
+
+Test 10: Query: 2000,?,?
+
+TEST PASSED
+
+
+Test 11: Query: ?,persimmon,?
+
+TEST PASSED
+
+
+Test 12: Query: ?,?,persimmon
+
+TEST PASSED
+
+
+Test 13: Query: 1540,chair,banana
+
+TEST PASSED
+
+===== New test file (3 attributes, 4 initial pages, 100 identical tuples)
+
+
+
+Test 14: Create a new MALH file 3 attrs, 4 pages
+
+
+Check stats
+TEST PASSED
+Check data file size
+TEST PASSED
+
+
+Test 15: Insert 100 identical tuples
+
+Check stats
+TEST PASSED
+Check all tuples in the same bucket
+TEST PASSED
+Check data file size
+TEST PASSED
+
+===== New test file (5 attributes, 16 initial pages, 10000 tuples)
+
+
+
+Test 16: Create a new MALH file 5 attrs, 16 pages
+
+Check stats
+TEST PASSED
+Check data file size
+TEST PASSED
+
+
+Test 17: Insert 10000 tuples
+
+Check stats
+TEST PASSED
+Check data file size
+TEST PASSED
+
+
+Test 18: Query: 13000,?,?,?,?
+
+TEST PASSED
+
+
+Test 19: Query: ?,banana,chocolates,?,?
+
+TEST PASSED
+
+
+Test 20: Query: ?,?,?,triangle,square
+
+TEST PASSED
+
+
+Test 21: Query: ?,table,?,boss,?
+
+TEST PASSED
+
+
+Test 22: Query: ?,table,banana,boss,airport
+
+TEST PASSED
+
+===== New test file (10 attributes, 32 initial pages, 10000 tuples)
+
+
+
+Test 23: Create a new MALH file 10 attrs, 32 pages
+
+Check stats
+TEST PASSED
+Check data file size
+TEST PASSED
+
+
+Test 24: Insert 10000 tuples
+
+insert: page.c:62: getPage: Assertion `n == PAGESIZE' failed.
+tests.sh: line 220: 1259766 Aborted                 ./insert xyz < $D/data4.txt > /dev/null
+Check stats
+TEST FAILED
+
+Your output:
+#attrs:10  #pages:32  #tuples:0  d:5  sp:0
+---end-of-output---
+Expected output:
+#attrs:10 *#pages:<any> *#tuples:10000 *d:<any> *sp:<any>
+---end-of-output---
+
+Check data file size
+TEST FAILED
+
+Your output:
+251904
+---end-of-output---
+Expected output:
+32768
+---end-of-output---
+
+
+
+Test 25: Query: ?,rope,?,?,?,?,?,?,?,bed
+
+TEST FAILED
+
+Diffs:
+0a1,2
+> 1883,rope,arm,dingbat,spotlight,gemstone,satellite,weapon,aeroplane,bed
+> 4420,rope,pendulum,electricity,pith,elephant,tiger,aircraft,television,bed
+
+Your output:
+---end-of-output---
+Expected output:
+1883,rope,arm,dingbat,spotlight,gemstone,satellite,weapon,aeroplane,bed$
+4420,rope,pendulum,electricity,pith,elephant,tiger,aircraft,television,bed$
+---end-of-output---
+
+
+
+Test 26: Query: ?,?,?,?,?,?,?,hot,?,aeroplane
+
+TEST FAILED
+
+Diffs:
+0a1,2
+> 4380,fungus,chisel,compass,swim,boy,earth,hot,fin,aeroplane
+> 6350,famine,finger,tunnel,banana,water,festival,hot,boss,aeroplane
+
+Your output:
+---end-of-output---
+Expected output:
+4380,fungus,chisel,compass,swim,boy,earth,hot,fin,aeroplane$
+6350,famine,finger,tunnel,banana,water,festival,hot,boss,aeroplane$
+---end-of-output---
+
+
+
+Test 27: Query: ?,?,?,?,?,?,flower,?,?,?
+
+TEST FAILED
+
+Diffs:
+0a1,39
+> 450,win,car,cave,microscope,milk,flower,banana,cave,festival
+> 581,bathtub,spice,carpet,meteor,car-race,flower,bird,adult,coffee
+> 1091,prison,hat,fungus,apple,record,flower,maze,restaurant,x-ray
+> 1540,surveyor,bomb,necklace,circus,set,flower,perfume,chess-board,slave
+> 1742,surveyor,computer,gasp,bank,drink,flower,plane,milk,skeleton
+> 1749,gloves,cat,library,woman,database,flower,bathroom,box,telescope
+> 1904,yellow,solid,car-race,database,clown,flower,rocket,potato,surveyor
+> 1982,robot,mum,cave,balloon,spiral,flower,cave,fruit,adult
+> 2013,navy,rope,car,snail,chief,flower,spiral,horse,chisel
+> 2573,fork,child,post,paintbrush,earth,flower,double,satellite,boy
+> 2712,game,button,spoon,tiger,needle,flower,cave,circle,weapon
+> 2765,book,oodle,torch,kitchen,highway,flower,pendulum,software,prison
+> 2887,junk,leg,satellite,vampire,dog,flower,cat,air,money
+> 2888,money,navy,typewriter,backpack,passport,flower,yellow,telescope,adult
+> 3233,dung,drink,passport,room,family,flower,ship,water,win
+> 4186,horoscope,carpet,skeleton,circus,chief,flower,zebra,cycle,elephant
+> 4369,money,aeroplane,aeroplane,double,grapes,flower,bridge,army,comet
+> 4393,paintbrush,meteor,mosquito,barbecue,chocolates,flower,spotlight,staircase,restaurant
+> 4981,cycle,gemstone,library,circle,bowl,flower,set,drill,room
+> 5040,planet,insect,dog,game,circus,flower,treadmill,typewriter,bomb
+> 5050,water,baby,car,spotlight,swim,flower,gas,horse,kitchen
+> 5542,chair,space,train,shoes,meteor,flower,roof,child,finger
+> 5767,win,carpet,brain,yawn,torpedo,flower,slave,album,yellow
+> 5798,television,salt,thermometer,satellite,pyramid,flower,star,fruit,thermometer
+> 6648,knife,bed,fork,swim,restaurant,flower,hot,boss,dog
+> 6659,book,horse,kitchen,nail,bed,flower,liquid,highway,room
+> 7106,bowl,school,sandpaper,chess-board,win,flower,gas,leg,gate
+> 7312,church,vacuum,rope,pebble,coffee-shop,flower,adult,cup,computer
+> 7376,worm,satellite,aircraft,meteor,eraser,flower,worm,tunnel,car-race
+> 7695,fork,fin,car-race,mum,backpack,flower,thermometer,satellite,wheelchair
+> 7788,rainbow,cup,record,horse,egg,flower,spectrum,record,spoon
+> 7882,yawn,adult,carrot,snail,leather,flower,table,roof,computer
+> 8456,wheelchair,surveyor,game,fruit,ice,flower,kitchen,cat,typewriter
+> 8607,train,balloon,sunglasses,ice,bed,flower,eyes,paintbrush,signature
+> 8616,passport,milk,ears,highway,eyes,flower,finger,ship,coffee
+> 8924,cycle,egg,clock,electricity,x-ray,flower,restaurant,pillow,game
+> 9085,school,spectrum,salt,torpedo,gas,flower,vacuum,torch,ice-cream
+> 9260,fin,diamond,leg,umbrella,compact-disc,flower,database,star,yellow
+> 9376,egg,ears,bed,microscope,rib,flower,circus,cat,chief
+
+Your output:
+---end-of-output---
+Expected output:
+450,win,car,cave,microscope,milk,flower,banana,cave,festival$
+581,bathtub,spice,carpet,meteor,car-race,flower,bird,adult,coffee$
+1091,prison,hat,fungus,apple,record,flower,maze,restaurant,x-ray$
+1540,surveyor,bomb,necklace,circus,set,flower,perfume,chess-board,slave$
+1742,surveyor,computer,gasp,bank,drink,flower,plane,milk,skeleton$
+1749,gloves,cat,library,woman,database,flower,bathroom,box,telescope$
+1904,yellow,solid,car-race,database,clown,flower,rocket,potato,surveyor$
+1982,robot,mum,cave,balloon,spiral,flower,cave,fruit,adult$
+2013,navy,rope,car,snail,chief,flower,spiral,horse,chisel$
+2573,fork,child,post,paintbrush,earth,flower,double,satellite,boy$
+2712,game,button,spoon,tiger,needle,flower,cave,circle,weapon$
+2765,book,oodle,torch,kitchen,highway,flower,pendulum,software,prison$
+2887,junk,leg,satellite,vampire,dog,flower,cat,air,money$
+2888,money,navy,typewriter,backpack,passport,flower,yellow,telescope,adult$
+3233,dung,drink,passport,room,family,flower,ship,water,win$
+4186,horoscope,carpet,skeleton,circus,chief,flower,zebra,cycle,elephant$
+4369,money,aeroplane,aeroplane,double,grapes,flower,bridge,army,comet$
+4393,paintbrush,meteor,mosquito,barbecue,chocolates,flower,spotlight,staircase,restaurant$
+4981,cycle,gemstone,library,circle,bowl,flower,set,drill,room$
+5040,planet,insect,dog,game,circus,flower,treadmill,typewriter,bomb$
+5050,water,baby,car,spotlight,swim,flower,gas,horse,kitchen$
+5542,chair,space,train,shoes,meteor,flower,roof,child,finger$
+5767,win,carpet,brain,yawn,torpedo,flower,slave,album,yellow$
+5798,television,salt,thermometer,satellite,pyramid,flower,star,fruit,thermometer$
+6648,knife,bed,fork,swim,restaurant,flower,hot,boss,dog$
+6659,book,horse,kitchen,nail,bed,flower,liquid,highway,room$
+7106,bowl,school,sandpaper,chess-board,win,flower,gas,leg,gate$
+7312,church,vacuum,rope,pebble,coffee-shop,flower,adult,cup,computer$
+7376,worm,satellite,aircraft,meteor,eraser,flower,worm,tunnel,car-race$
+7695,fork,fin,car-race,mum,backpack,flower,thermometer,satellite,wheelchair$
+7788,rainbow,cup,record,horse,egg,flower,spectrum,record,spoon$
+7882,yawn,adult,carrot,snail,leather,flower,table,roof,computer$
+8456,wheelchair,surveyor,game,fruit,ice,flower,kitchen,cat,typewriter$
+8607,train,balloon,sunglasses,ice,bed,flower,eyes,paintbrush,signature$
+8616,passport,milk,ears,highway,eyes,flower,finger,ship,coffee$
+8924,cycle,egg,clock,electricity,x-ray,flower,restaurant,pillow,game$
+9085,school,spectrum,salt,torpedo,gas,flower,vacuum,torch,ice-cream$
+9260,fin,diamond,leg,umbrella,compact-disc,flower,database,star,yellow$
+9376,egg,ears,bed,microscope,rib,flower,circus,cat,chief$
+---end-of-output---
+
+
+
+Test 28: Query: ?,money,?,typewriter,?,?,flower,?,?,adult
+
+TEST FAILED
+
+Diffs:
+0a1
+> 2888,money,navy,typewriter,backpack,passport,flower,yellow,telescope,adult
+
+Your output:
+---end-of-output---
+Expected output:
+2888,money,navy,typewriter,backpack,passport,flower,yellow,telescope,adult$
+---end-of-output---
+
+
+
+Test 29: Query: ?,?,money,?,?,?,flower,?,?,?
+
+TEST PASSED
+
+===== New test file (2 attributes, 4 initial pages, 10000 tuples)
+
+
+
+Test 30: Create a new MALH file 2 attrs, 4 pages
+
+Check stats
+TEST PASSED
+Check data file size
+TEST PASSED
+
+
+Test 31: Insert 10000 tuples
+
+Check stats
+TEST PASSED
+Check data file size
+TEST PASSED
+
+
+Test 32: Query: ?,yellow
+
+TEST FAILED
+
+Diffs:
+0a1
+> 217,yellow
+2a4
+> 3535,yellow
+3a6
+> 3915,yellow
+5a9
+> 4348,yellow
+6a11,15
+> 4753,yellow
+> 4871,yellow
+> 5067,yellow
+> 5833,yellow
+> 5907,yellow
+7a17
+> 6245,yellow
+8a19
+> 6616,yellow
+12a24,27
+> 8201,yellow
+> 8581,yellow
+> 8884,yellow
+> 8931,yellow
+13a29,30
+> 9864,yellow
+> 9933,yellow
+
+Your output:
+2338,yellow$
+2375,yellow$
+3799,yellow$
+4073,yellow$
+4274,yellow$
+4389,yellow$
+5956,yellow$
+6386,yellow$
+6710,yellow$
+7196,yellow$
+7586,yellow$
+7934,yellow$
+8941,yellow$
+---end-of-output---
+Expected output:
+217,yellow$
+2338,yellow$
+2375,yellow$
+3535,yellow$
+3799,yellow$
+3915,yellow$
+4073,yellow$
+4274,yellow$
+4348,yellow$
+4389,yellow$
+4753,yellow$
+4871,yellow$
+5067,yellow$
+5833,yellow$
+5907,yellow$
+5956,yellow$
+6245,yellow$
+6386,yellow$
+6616,yellow$
+6710,yellow$
+7196,yellow$
+7586,yellow$
+7934,yellow$
+8201,yellow$
+8581,yellow$
+8884,yellow$
+8931,yellow$
+8941,yellow$
+9864,yellow$
+9933,yellow$
+---end-of-output---
+
+
+
+Test 33: Query: 492,?
+
+TEST PASSED
+
+
+Test 34: Query: 9492,potato
+
+TEST PASSED
+
+
+Test 35: Query: ?,multiverse
+
+TEST PASSED
+
+
+Test 36: Query: ?,electricity
+
+TEST FAILED
+
+Diffs:
+0a1
+> 218,electricity
+1a3,4
+> 774,electricity
+> 1099,electricity
+2a6,8
+> 1552,electricity
+> 2566,electricity
+> 2884,electricity
+4a11
+> 3683,electricity
+5a13
+> 3973,electricity
+6a15
+> 4922,electricity
+9a19
+> 6111,electricity
+11a22
+> 6749,electricity
+13a25,30
+> 8250,electricity
+> 8498,electricity
+> 8892,electricity
+> 8957,electricity
+> 9481,electricity
+> 9655,electricity
+
+Your output:
+731,electricity$
+1192,electricity$
+3165,electricity$
+3497,electricity$
+3953,electricity$
+4392,electricity$
+5144,electricity$
+5315,electricity$
+5973,electricity$
+6122,electricity$
+6272,electricity$
+6814,electricity$
+7722,electricity$
+---end-of-output---
+Expected output:
+218,electricity$
+731,electricity$
+774,electricity$
+1099,electricity$
+1192,electricity$
+1552,electricity$
+2566,electricity$
+2884,electricity$
+3165,electricity$
+3497,electricity$
+3683,electricity$
+3953,electricity$
+3973,electricity$
+4392,electricity$
+4922,electricity$
+5144,electricity$
+5315,electricity$
+5973,electricity$
+6111,electricity$
+6122,electricity$
+6272,electricity$
+6749,electricity$
+6814,electricity$
+7722,electricity$
+8250,electricity$
+8498,electricity$
+8892,electricity$
+8957,electricity$
+9481,electricity$
+9655,electricity$
+---end-of-output---
+
+
+===== New test file (4 attributes, 8 initial pages, 10000 tuples)
+
+
+
+Test 37: Create a new MALH file 4 attrs, 8 pages
+
+Check stats
+TEST PASSED
+Check data file size
+TEST PASSED
+
+
+Test 38: Insert 10000 tuples
+
+Check stats
+TEST PASSED
+Check data file size
+TEST PASSED
+
+
+Test 39: Query: ?,?,space,?
+
+TEST PASSED
+
+
+Test 40: Query: ?,space,space,?
+
+TEST PASSED
+
+
+Test 41: Query: ?,ring,?,mist
+
+TEST PASSED
+
+
+Test 42: Query: ?,rock,?,child
+
+TEST PASSED
+
+
+Test 43: Query: ?,rock,bed,shop
+
+TEST PASSED
+
+===== Check splitting behaviour
+
+
+
+Test 44: Monitor splits
+
+Split occured after 26 inserts
+Added new page after 26 inserts
+Split occured after 51 inserts
+Added new page after 51 inserts
+Split occured after 76 inserts
+Added new page after 76 inserts
+Split occured after 101 inserts
+Added new page after 101 inserts
+Split occured after 126 inserts
+Added new page after 126 inserts
+...
+File size doubled after 201 inserts
+Split occured after 226 inserts
+Added new page after 226 inserts
+Split occured after 251 inserts
+Added new page after 251 inserts
+Split occured after 276 inserts
+Added new page after 276 inserts
+
+Performed 10 splits; added 11 pages
+TEST PASSED
+
+===== Check for using multi-attribute hashing for queries
+
+First build a new test data file (4 attributes, 1000 tuples)
+
+===== Instrument the code, and then remake 'select'
+
+
+
+Test 45: Query: 6488,?,?,?
+
+#pages = 18
+Read 18 pages; expected between 8 and 24
+TEST PASSED
+
+
+Test 46: Query: 6488,zebra,?,?
+
+#pages = 10
+Read 10 pages; expected between 4 and 16
+TEST PASSED
+
+
+Test 47: Query: 6488,zebra,brain,?
+
+#pages = 4
+Read 4 pages; expected between 2 and 8
+TEST PASSED
+
+
+Test 48: Query: 6488,zebra,brain,set
+
+#pages = 2
+Read 2 pages; expected between 1 and 5
+TEST PASSED
+
+
+Queries: Passes: 23, Fails: 6
+Creates: Passes: 12, Fails: 0
+Inserts: Passes: 17, Fails: 2
+Splits : Passes: 1, Fails: 0
+Hashing: Passes: 4, Fails: 0
+
+===== Testing Summary and Marks =====
+
+What have we learned from the testing ...
+
+Search via hashing (unknown bits) appears to be ok.
+Mark: 4/4 for searching via hashing.
+
+Your linear hashing implementation appears to be working.
+Mark: 4/4 for linear hashing implementation.
+
+Your code creates empty relation files ok.
+Mark: 1/1 for relation file creation.
+
+Your code usually inserts tuples into relation files ok.
+Mark: 1.5/2 for tuple insertion/file building.
+
+You produced expected output for 23 queries.
+You did not produce expected output for 6 queries.
+Mark: 7.1/9 for query answering.
+
+FINAL MARK: 17.6 / 20
+
+
+!!section tests
+!!section assess
+
+!!marktab	**  MARKER'S  ASSESSMENT  **
+
+
+5464669	Thottakathu Prasannakumar, Alok        	8543   COMPAS COMPSS
