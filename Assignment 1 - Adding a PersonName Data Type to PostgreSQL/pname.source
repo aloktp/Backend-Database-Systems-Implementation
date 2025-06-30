@@ -1,0 +1,167 @@
+-- The main point to note is when doing ORDER BY family(personname), show(personname) etc.. these functions return text values. YOU DONT NEED TO IMPLEMENT B-TREE Operator class for ordering "text" data type values. 
+-- Postgres itself has built in default operator class for that. BUT YOU NEED TO ENSURE THAT data type mentioned as return type of those 3 functions are "text" . Ensure to use PG_RETURN_TEXT_P(cstring_to_text( )) in the C code return statmement of these functions.
+
+
+---------------------------------------------------------------------------
+--
+-- pname.sql-
+--    This file shows how to create a new user-defined type and how to
+--    use this new type.
+--
+--
+-- Portions Copyright (c) 1996-2022, PostgreSQL Global Development Group
+-- Portions Copyright (c) 1994, Regents of the University of California
+--
+-- src/tutorial/pname.source
+--
+---------------------------------------------------------------------------
+--------------------------------------------------------
+CREATE TYPE PersonName;  --create shell of type and then fill its details about length after declaring pname_in and pname_out.
+--------------------------------------------------------
+
+-- Assume the user defined functions are in _OBJWD_/complex$DLSUFFIX
+-- (we do not want to assume this is in the dynamic loader search path).
+-- Look at $PWD/pname.c for the source.  Note that we declare all of
+-- them as STRICT, so we do not need to cope with NULL inputs in the
+-- C code.  We also mark them IMMUTABLE, since they always return the
+-- same outputs given the same inputs.
+
+
+-- the input function 'pname_in' takes a null-terminated string (the
+-- textual representation of the type) and turns it into the internal
+-- (in memory) representation. You will get a message telling you 'PersonName'
+-- does not exist yet but that's okay.
+
+CREATE FUNCTION pname_in(cstring)
+   RETURNS PersonName
+   AS '_OBJWD_/pname'
+   LANGUAGE C IMMUTABLE STRICT;
+
+-- the output function 'pname_out' takes the internal representation and
+-- converts it into the textual representation.
+
+CREATE FUNCTION pname_out(PersonName)
+   RETURNS cstring
+   AS '_OBJWD_/pname'
+   LANGUAGE C IMMUTABLE STRICT;
+
+-- now, we can create the type. The internallength specifies the size of the
+-- memory block required to hold the type (we need two 8-byte doubles).
+
+-----------------------------
+-- Creating a new type:
+--	We are going to create a new type called 'PersonName' which represents
+--	PersonName.
+--	A user-defined type must have an input and an output function, and
+--	optionally can have binary input and output functions.  All of these
+--	are usually user-defined C functions.
+-----------------------------
+
+
+CREATE TYPE PersonName(
+   internallength = variable,
+   input = pname_in,
+   output = pname_out,
+   alignment = int            -- in postgres documentation of CREATE TYPE, it says variable length types must have an alignment of atleast 4, since they contain int4 as their first argument.   
+);
+
+-- the alignment is necessary to decide how the type is stored in memory by Postgres memory management, just like in C , the members of data structure and the order of members affects total size of data structure (see data structure alignment videos). Since, in the data structure too, int was 1st member and i dont think there will be a name with 32 characters i.e. 32 bytes.. so, int will be larger size and also imprtantly, 1st member in data structure, so the size will be in mutliples of "64-bit" (CPU word size in V-lab) or lesser i.e. 32 bit word size because of int data type in any other CPU architectures like 32 bit etc.
+
+-----------------------------
+-- Interfacing New Types with Indexes:
+--	We cannot define a secondary index (eg. a B-tree) over the new type
+--	yet. We need to create all the required operators and support
+--      functions, then we can make the operator class.
+
+-- first, define the required operators
+CREATE FUNCTION pname_lt(PersonName, PersonName) RETURNS bool
+   AS '_OBJWD_/pname' LANGUAGE C IMMUTABLE STRICT;
+CREATE FUNCTION pname_le(PersonName, PersonName) RETURNS bool
+   AS '_OBJWD_/pname' LANGUAGE C IMMUTABLE STRICT;
+CREATE FUNCTION pname_gt(PersonName, PersonName) RETURNS bool
+   AS '_OBJWD_/pname' LANGUAGE C IMMUTABLE STRICT;
+CREATE FUNCTION pname_ge(PersonName, PersonName) RETURNS bool
+   AS '_OBJWD_/pname' LANGUAGE C IMMUTABLE STRICT;
+CREATE FUNCTION pname_eq(PersonName, PersonName) RETURNS bool
+   AS '_OBJWD_/pname' LANGUAGE C IMMUTABLE STRICT;
+CREATE FUNCTION pname_neq(PersonName, PersonName) RETURNS bool
+   AS '_OBJWD_/pname' LANGUAGE C IMMUTABLE STRICT;
+
+
+-- Operators below are for ordering by personname type. 
+
+CREATE OPERATOR < (
+   leftarg = PersonName, rightarg = PersonName, procedure = pname_lt,
+   commutator = > , negator = >= ,
+   restrict = scalarltsel, join = scalarltjoinsel
+);
+CREATE OPERATOR <= (
+   leftarg = PersonName, rightarg = PersonName, procedure = pname_le,
+   commutator = >= , negator = > ,
+   restrict = scalarlesel, join = scalarlejoinsel
+);
+CREATE OPERATOR = (
+   leftarg = PersonName, rightarg = PersonName, procedure = pname_eq,
+   commutator = = , negator = <> ,
+   restrict = eqsel, HASHES, join = eqjoinsel
+);
+CREATE OPERATOR >= (
+   leftarg = PersonName, rightarg = PersonName, procedure = pname_ge,
+   commutator = <= , negator = < ,
+   restrict = scalargesel, join = scalargejoinsel
+);
+CREATE OPERATOR > (
+   leftarg = PersonName, rightarg = PersonName, procedure = pname_gt,
+   commutator = < , negator = <= ,
+   restrict = scalargtsel, join = scalargtjoinsel
+);
+CREATE OPERATOR <> (
+   leftarg = PersonName, rightarg = PersonName, procedure = pname_neq,
+   commutator = <> , negator = = ,
+   restrict = neqsel, join = neqjoinsel
+);
+
+
+-- VERY IMPORTANT. Cstring and text are different. If using return cstring below, then in C code function, use 
+-- pg_return_cstring. If you use return text below, then you have to use pg_return_text_p(cstring_to_text(
+-- )).. i think better to use cstring.. simpler.
+-- DONOT use cstring though. You want Postgres to be able to use inbuilt b-tree operator for ORDER by text datatype
+
+-- create the support function too
+CREATE FUNCTION family(PersonName) RETURNS text
+   AS '_OBJWD_/pname', 'pname_family' LANGUAGE C IMMUTABLE STRICT;
+
+CREATE FUNCTION given(PersonName) RETURNS text
+   AS '_OBJWD_/pname', 'pname_given' LANGUAGE C IMMUTABLE STRICT;
+
+CREATE FUNCTION show(PersonName) RETURNS text			   
+   AS '_OBJWD_/pname', 'pname_show' LANGUAGE C IMMUTABLE STRICT;
+
+-- I can do function overloading in Pstgres BUT NOT in C i.thus I am NOT going to use same function name 'pname_btree' but having different number of argument / different argument data types, in case i am creating multiple operator class.. but in this case, i dont have to create multiple operator class.. the queries do order by personname i..e datastructure and ORDER by show(personname) etc which are text, which Postgres inbuilt b-tree operator class automatically does i.e. I dont have to implement that.
+CREATE FUNCTION pname_btree_datastructure(PersonName, PersonName) RETURNS integer
+   AS '_OBJWD_/pname' LANGUAGE C IMMUTABLE STRICT;
+
+CREATE FUNCTION pname_hash(PersonName) RETURNS integer
+   AS '_OBJWD_/pname' LANGUAGE C IMMUTABLE STRICT;
+
+
+-- this operator class is for b-tree indexing. This b-tree indexing is necessary if you want ORDER BY ASC or ORDER BY DESC keyowrd in SQL to work
+-- now we can make the operator class
+CREATE OPERATOR CLASS pname_ops
+    DEFAULT FOR TYPE PersonName USING btree AS
+        OPERATOR        1       < ,
+        OPERATOR        2       <= ,
+        OPERATOR        3       = ,
+        OPERATOR        4       >= ,
+        OPERATOR        5       > ,
+	FUNCTION	1	pname_btree_datastructure(PersonName,PersonName);   -- for ORDER BY realname
+	
+
+-- This is for hash tree indexing operator class.       
+
+CREATE OPERATOR CLASS pname_ops
+    DEFAULT FOR TYPE PersonName USING hash AS
+        OPERATOR        1       = ,
+        FUNCTION        1       pname_hash(PersonName);
+
+
